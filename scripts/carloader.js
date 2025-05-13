@@ -17,7 +17,7 @@ function loadCar(scene, carIndex) {
     }
 
     // Muat mobil baru dari folder masing-masing
-    BABYLON.SceneLoader.ImportMesh("", "assets/" + car.folder + "/", car.file, scene, function (meshes) {
+    BABYLON.SceneLoader.ImportMesh("", "https://username.github.io/showroom-mobil/assets/car1/", "car1.gltf", scene, function (meshes) {
         currentCar = meshes[0]; // Simpan referensi mobil yang baru dimuat
         currentCar.position = new BABYLON.Vector3(0, 0, 0);
         currentCar.scaling = new BABYLON.Vector3(1, 1, 1);
