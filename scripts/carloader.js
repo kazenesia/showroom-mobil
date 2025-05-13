@@ -1,6 +1,5 @@
 let currentCar; // Variabel untuk menyimpan mobil yang sedang ditampilkan
 let currentIndex = 0; // Indeks mobil yang sedang ditampilkan
-let selectedCar = null; // Mobil yang dipilih untuk eksplorasi
 
 const carModels = [
     { folder: "car1", file: "car1.gltf", name: "Mobil 1", specs: "🚗 **Model:** Car 1<br>⚙️ **Mesin:** V8 Turbo<br>🔋 **Tenaga:** 500 HP" },
