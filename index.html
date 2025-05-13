@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showroom Mobil 3D</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.babylonjs.com/babylon.js"></script>
-    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <meta charset="UTF-8">
+  <title>3D Showroom Mobil</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
 </head>
 <body>
-    <div id="ui-container">
-        <h2>Pilih Mobil</h2>
-        <div id="carousel">
-            <button id="prev-btn">❮</button>
-            <div id="car-display">Mobil 1</div>
-            <button id="next-btn">❯</button>
-        </div>
-        <button id="select-btn">Pilih Mobil</button>
-        <h3>Spesifikasi</h3>
-        <div id="car-specs">Geser untuk memilih mobil...</div>
+  <canvas id="renderCanvas"></canvas>
+
+  <!-- Carousel -->
+  <div id="carousel">
+    <button onclick="prevSlide()">?</button>
+    <div id="car-name">Memuat...</div>
+    <button onclick="nextSlide()">?</button>
+    <button onclick="selectCar()">Pilih Mobil Ini</button>
+  </div>
+
+  <!-- Detail Panel -->
+  <div id="car-details" style="display: none;">
+    <h2 id="car-title"></h2>
+    <p id="car-specs"></p>
+    <div id="camera-controls">
+      <button onclick="setCameraTo('left')">Samping</button>
+      <button onclick="setCameraTo('top')">Atas</button>
+      <button onclick="setCameraTo('inside')">Dalam</button>
     </div>
-    <canvas id="renderCanvas"></canvas>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/ui.js"></script>
-    <script src="scripts/carloader.js"></script>
+<!-- Tambahan di dalam #car-details -->
+<button onclick="exitDetailMode()">Kembali ke Carousel</button>
+
+  </div>
+
+  <script src="scripts/main.js"></script>
 </body>
 </html>
