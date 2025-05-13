@@ -11,9 +11,14 @@
 <body>
     <div id="ui-container">
         <h2>Pilih Mobil</h2>
-        <input type="range" id="car-slider" min="0" max="4" value="0">
+        <div id="carousel">
+            <button id="prev-btn">❮</button>
+            <div id="car-display">Mobil 1</div>
+            <button id="next-btn">❯</button>
+        </div>
+        <button id="select-btn">Pilih Mobil</button>
         <h3>Spesifikasi</h3>
-        <div id="car-specs">Klik mobil untuk melihat spesifikasi...</div>
+        <div id="car-specs">Geser untuk memilih mobil...</div>
     </div>
     <canvas id="renderCanvas"></canvas>
     <script src="scripts/main.js"></script>
