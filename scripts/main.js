@@ -3,18 +3,14 @@ const engine = new BABYLON.Engine(canvas, true);
 const scene = new BABYLON.Scene(engine);
 scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.1, 1);
 
-// Environment & lighting
+// Tambahkan lingkungan default (tanah, pencahayaan)
 scene.createDefaultEnvironment();
-const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
-// Camera
+// Kamera & Cahaya
 const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2.5, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 1, 0), scene);
-camera.attachControl(canvas, true);
-camera.useAutoRotationBehavior = true;
+camera.attachControl(canvas, true); // hanya aktif saat mode detail
 
-// Dummy box (for testing scene)
-const box = BABYLON.MeshBuilder.CreateBox("debugBox", { size: 1 }, scene);
-box.position = new BABYLON.Vector3(0, 0.5, 0);
+const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
 // Data Mobil
 const cars = [
@@ -29,6 +25,7 @@ const loadedCars = [];
 let currentIndex = 0;
 let mode = "carousel";
 
+// Load semua mobil
 cars.forEach((car, index) => {
   BABYLON.SceneLoader.ImportMesh("", `assets/${car.folder}/`, car.file, scene, (meshes) => {
     const carRoot = meshes[0].parent || meshes[0];
@@ -36,24 +33,35 @@ cars.forEach((car, index) => {
     carRoot.rotation = new BABYLON.Vector3(0, BABYLON.Tools.ToRadians(-30), 0);
     carRoot.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
     carRoot.setEnabled(false);
+
     loadedCars.push({ ...car, mesh: carRoot });
     console.log(`✅ Loaded: ${car.name}`);
-    if (loadedCars.length === cars.length) updateCarousel();
+
+    if (loadedCars.length === cars.length) {
+      updateCarousel();
+    }
   }, null, (scene, msg) => {
     console.error(`❌ Gagal memuat model ${car.name}:`, msg);
   });
 });
 
+// Fungsi Carousel
 function updateCarousel() {
   if (mode !== "carousel") return;
-  loadedCars.forEach((carObj, i) => carObj.mesh.setEnabled(i === currentIndex));
+
+  loadedCars.forEach((carObj, i) => {
+    carObj.mesh.setEnabled(i === currentIndex);
+  });
+
   const currentCar = loadedCars[currentIndex];
   document.getElementById("car-name").innerText = currentCar.name;
-  camera.detachControl(canvas);
+
+  camera.detachControl(canvas); // Nonaktifkan kontrol di mode carousel
   camera.setTarget(currentCar.mesh.position);
   camera.alpha = -Math.PI / 3;
   camera.beta = Math.PI / 2.5;
   camera.radius = 20;
+
   document.getElementById("car-details").style.display = "none";
 }
 
@@ -67,26 +75,32 @@ function nextSlide() {
   updateCarousel();
 }
 
+// Mode Detail
 function selectCar() {
   const car = loadedCars[currentIndex];
   mode = "detail";
+
   camera.attachControl(canvas, true);
   camera.setTarget(car.mesh.position);
   camera.radius = 10;
+
   document.getElementById("car-title").innerText = `${car.name} (${car.year})`;
   document.getElementById("car-specs").innerText = `Model: ${car.model}, Spesifikasi: ${car.spec}`;
   document.getElementById("car-details").style.display = "block";
 }
 
+// Kembali ke Carousel
 function exitDetailMode() {
   mode = "carousel";
   camera.detachControl(canvas);
   updateCarousel();
 }
 
+// Preset Kamera
 function setCameraTo(view) {
   const car = loadedCars[currentIndex];
   const pos = car.mesh.position;
+
   switch (view) {
     case "left":
       camera.setPosition(new BABYLON.Vector3(pos.x - 5, pos.y + 2, pos.z));
@@ -98,8 +112,14 @@ function setCameraTo(view) {
       camera.setPosition(new BABYLON.Vector3(pos.x, pos.y + 1.2, pos.z));
       break;
   }
+
   camera.setTarget(pos);
 }
 
-engine.runRenderLoop(() => scene.render());
-window.addEventListener("resize", () => engine.resize());
+engine.runRenderLoop(() => {
+  scene.render();
+});
+
+window.addEventListener("resize", () => {
+  engine.resize();
+});
