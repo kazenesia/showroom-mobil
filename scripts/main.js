@@ -24,7 +24,7 @@ let mode = "carousel"; // atau "detail"
 
 // Load semua mobil
 cars.forEach((car, index) => {
-  BABYLON.SceneLoader.ImportMesh("", `models/${car.folder}/`, car.file, scene, (meshes) => {
+  BABYLON.SceneLoader.ImportMesh("", `assets/${car.folder}/`, car.file, scene, (meshes) => {
     const carRoot = meshes[0].parent || meshes[0];
     carRoot.position = new BABYLON.Vector3(index * 10, 0, 0);
     carRoot.rotation = new BABYLON.Vector3(0, BABYLON.Tools.ToRadians(-30), 0);
