@@ -1,12 +1,20 @@
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 const scene = new BABYLON.Scene(engine);
-scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
+scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.1, 1);
 
-// Camera & Light
-const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2.5, Math.PI / 2.5, 20, BABYLON.Vector3.Zero(), scene);
-camera.attachControl(canvas, false);
-const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
+// Tambahkan lingkungan default (tanah + pencahayaan)
+scene.createDefaultEnvironment();
+
+// Kamera & Cahaya
+const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2.5, Math.PI / 2.5, 15, BABYLON.Vector3.Zero(), scene);
+camera.attachControl(canvas, true);
+camera.useAutoRotationBehavior = true; // Kamera auto berputar
+const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+// Dummy Box Test (untuk memastikan scene tampil)
+const box = BABYLON.MeshBuilder.CreateBox("debugBox", { size: 1 }, scene);
+box.position = new BABYLON.Vector3(0, 0.5, 0);
 
 // Daftar Mobil
 const cars = [
@@ -25,8 +33,11 @@ let mode = "carousel";
 cars.forEach((car, index) => {
   BABYLON.SceneLoader.ImportMesh("", `assets/${car.folder}/`, car.file, scene, (meshes) => {
     const carRoot = meshes[0].parent || meshes[0];
-    carRoot.position = new BABYLON.Vector3(index * 10, 0, 0);
+
+    // Atur posisi & skala agar terlihat
+    carRoot.position = new BABYLON.Vector3(index * 20, 0, 0);
     carRoot.rotation = new BABYLON.Vector3(0, BABYLON.Tools.ToRadians(-30), 0);
+    carRoot.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
     carRoot.setEnabled(false);
 
     loadedCars.push({ ...car, mesh: carRoot });
@@ -34,7 +45,6 @@ cars.forEach((car, index) => {
     console.log(`✅ Loaded: ${car.name}`);
 
     if (loadedCars.length === cars.length) {
-      console.log("🚗 Semua mobil berhasil dimuat.");
       updateCarousel();
     }
   }, null, (scene, msg) => {
@@ -74,4 +84,49 @@ function nextSlide() {
 
 // Masuk Mode Detail
 function selectCar() {
-  const car = loadedCars[current]()
+  const car = loadedCars[currentIndex];
+  mode = "detail";
+
+  camera.attachControl(canvas, true);
+  camera.setTarget(car.mesh.position);
+  camera.radius = 10;
+
+  document.getElementById("car-title").innerText = `${car.name} (${car.year})`;
+  document.getElementById("car-specs").innerText = `Model: ${car.model}, Spesifikasi: ${car.spec}`;
+  document.getElementById("car-details").style.display = "block";
+}
+
+// Keluar Mode Detail
+function exitDetailMode() {
+  mode = "carousel";
+  camera.detachControl(canvas);
+  updateCarousel();
+}
+
+// Kamera Preset
+function setCameraTo(view) {
+  const car = loadedCars[currentIndex];
+  const pos = car.mesh.position;
+
+  switch (view) {
+    case "left":
+      camera.setPosition(new BABYLON.Vector3(pos.x - 5, pos.y + 2, pos.z));
+      break;
+    case "top":
+      camera.setPosition(new BABYLON.Vector3(pos.x, pos.y + 10, pos.z));
+      break;
+    case "inside":
+      camera.setPosition(new BABYLON.Vector3(pos.x, pos.y + 1.2, pos.z));
+      break;
+  }
+
+  camera.setTarget(pos);
+}
+
+engine.runRenderLoop(() => {
+  scene.render();
+});
+
+window.addEventListener("resize", () => {
+  engine.resize();
+});
