@@ -28,7 +28,7 @@ cars.forEach((car, index) => {
     const carRoot = meshes[0].parent || meshes[0];
     carRoot.position = new BABYLON.Vector3(index * 10, 0, 0);
     carRoot.rotation = new BABYLON.Vector3(0, BABYLON.Tools.ToRadians(-30), 0);
-    carRoot.setEnabled(false);
+    carRoot.setEnabled(index === 0);
     loadedCars[index] = { ...car, mesh: carRoot };
 
     if (loadedCars.length === cars.length) {
