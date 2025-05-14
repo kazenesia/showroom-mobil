@@ -130,3 +130,9 @@ engine.runRenderLoop(() => {
 window.addEventListener("resize", () => {
   engine.resize();
 });
+
+setTimeout(() => {
+  engine.resize();
+}, 1000);
+
+scene.debugLayer.show();
