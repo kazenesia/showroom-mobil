@@ -28,9 +28,8 @@ cars.forEach((car, index) => {
     const carRoot = meshes[0].parent || meshes[0];
     carRoot.position = new BABYLON.Vector3(index * 10, 0, 0);
     carRoot.rotation = new BABYLON.Vector3(0, BABYLON.Tools.ToRadians(-30), 0);
-    carRoot.setEnabled(index === 0);
+    carRoot.setEnabled(false);
     loadedCars[index] = { ...car, mesh: carRoot };
-    console.log(`🚗 Loaded: ${car.name}`, carRoot);
     if (loadedCars.length === cars.length) {
       updateCarousel();
     }
