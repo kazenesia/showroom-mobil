@@ -29,7 +29,7 @@ cars.forEach((car, index) => {
     carRoot.position = new BABYLON.Vector3(index * 10, 0, 0);
     carRoot.rotation = new BABYLON.Vector3(0, BABYLON.Tools.ToRadians(-30), 0);
     carRoot.setEnabled(false);
-    loadedCars[index] = { ...car, mesh: carRoot };
+    loadedCars.push = { ...car, mesh: carRoot };
     if (loadedCars.length === cars.length) {
       updateCarousel();
     }
