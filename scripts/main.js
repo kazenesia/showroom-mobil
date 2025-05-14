@@ -3,13 +3,12 @@ const engine = new BABYLON.Engine(canvas, true);
 const scene = new BABYLON.Scene(engine);
 scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.1, 1);
 
-// Tambahkan lingkungan default (tanah, pencahayaan)
+// Tambahkan lingkungan default (tanah + pencahayaan)
 scene.createDefaultEnvironment();
 
 // Kamera & Cahaya
 const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2.5, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 1, 0), scene);
-camera.attachControl(canvas, true); // hanya aktif saat mode detail
-
+// Catatan: Jangan attach di awal. Hanya saat mode detail
 const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
 // Data Mobil
@@ -56,7 +55,7 @@ function updateCarousel() {
   const currentCar = loadedCars[currentIndex];
   document.getElementById("car-name").innerText = currentCar.name;
 
-  camera.detachControl(canvas); // Nonaktifkan kontrol di mode carousel
+  camera.detachControl(canvas);
   camera.setTarget(currentCar.mesh.position);
   camera.alpha = -Math.PI / 3;
   camera.beta = Math.PI / 2.5;
