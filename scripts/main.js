@@ -1,16 +1,14 @@
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 const scene = new BABYLON.Scene(engine);
-scene.clearColor = new BABYLON.Color4(0.95, 0.95, 0.95, 1); // ganti latar belakang jadi abu terang
+scene.clearColor = new BABYLON.Color4(0.95, 0.95, 0.95, 1); // Abu terang showroom
 
-// Lingkungan & pencahayaan
 scene.createDefaultEnvironment();
+
+const camera = new BABYLON.ArcRotateCamera("camera", Math.PI / 2, Math.PI / 3, 15, BABYLON.Vector3.Zero(), scene);
 const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
-// Kamera
-const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2.5, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 1, 0), scene);
-
-// Data Mobil
+// Data mobil
 const cars = [
   { name: "BMW M4 Coupe", folder: "car1", file: "car1.gltf", year: 2018, model: "F82", spec: "3.0L Twin Turbo" },
   { name: "Bugatti Centodieci", folder: "car2", file: "car2.gltf", year: 2019, model: "-", spec: "8.0L Quad Turbo" },
@@ -23,47 +21,42 @@ const loadedCars = [];
 let currentIndex = 0;
 let mode = "carousel";
 
+function focusCameraOnMesh(mesh) {
+  const bounds = mesh.getBoundingInfo().boundingBox;
+  const center = bounds.centerWorld;
+  const size = bounds.extendSizeWorld;
+
+  camera.setTarget(center);
+  camera.setPosition(new BABYLON.Vector3(center.x + size.x * 3, center.y + size.y * 1.2, center.z + size.z * 2));
+}
+
 cars.forEach((car, index) => {
   BABYLON.SceneLoader.ImportMesh("", `assets/${car.folder}/`, car.file, scene, (meshes) => {
-    const carRoot = meshes[0].parent || meshes[0];
-    carRoot.position = new BABYLON.Vector3(index * 20, 0, 0);
-    carRoot.rotation = new BABYLON.Vector3(0, BABYLON.Tools.ToRadians(-30), 0);
-    carRoot.scaling = new BABYLON.Vector3(4, 4, 4); // Lebih besar
-    carRoot.setEnabled(index === 0); // Hanya mobil pertama yang langsung tampil
-
-    // Simpan bounding box (untuk preset kamera)
-    carRoot.metadata = {
-      bounds: carRoot.getBoundingInfo().boundingBox
-    };
-
-    loadedCars.push({ ...car, mesh: carRoot });
-    console.log(`✅ Loaded: ${car.name}`);
+    const root = meshes[0].parent || meshes[0];
+    root.scaling = new BABYLON.Vector3(5, 5, 5); // perbesar
+    root.position = BABYLON.Vector3.Zero();
+    root.setEnabled(index === 0); // tampilkan mobil pertama saja
+    loadedCars.push({ ...car, mesh: root });
 
     if (loadedCars.length === cars.length) {
       updateCarousel();
     }
-  }, null, (scene, msg) => {
-    console.error(`❌ Gagal memuat model ${car.name}:`, msg);
+  }, null, (scene, err) => {
+    console.error(`❌ Error loading ${car.name}:`, err);
   });
 });
 
-// Fungsi Carousel
 function updateCarousel() {
   if (mode !== "carousel") return;
 
-  loadedCars.forEach((carObj, i) => {
-    carObj.mesh.setEnabled(i === currentIndex);
+  loadedCars.forEach((car, i) => {
+    car.mesh.setEnabled(i === currentIndex);
   });
 
-  const currentCar = loadedCars[currentIndex];
-  document.getElementById("car-name").innerText = currentCar.name;
-
+  const car = loadedCars[currentIndex];
+  document.getElementById("car-name").innerText = car.name;
   camera.detachControl(canvas);
-  camera.setTarget(currentCar.mesh.position);
-  camera.alpha = -Math.PI / 3;
-  camera.beta = Math.PI / 2.5;
-  camera.radius = 20;
-
+  focusCameraOnMesh(car.mesh);
   document.getElementById("car-details").style.display = "none";
 }
 
@@ -80,11 +73,8 @@ function nextSlide() {
 function selectCar() {
   const car = loadedCars[currentIndex];
   mode = "detail";
-
   camera.attachControl(canvas, true);
-  camera.setTarget(car.mesh.position);
-  camera.radius = 10;
-
+  focusCameraOnMesh(car.mesh);
   document.getElementById("car-title").innerText = `${car.name} (${car.year})`;
   document.getElementById("car-specs").innerText = `Model: ${car.model}, Spesifikasi: ${car.spec}`;
   document.getElementById("car-details").style.display = "block";
@@ -96,23 +86,18 @@ function exitDetailMode() {
   updateCarousel();
 }
 
-// Kamera Preset
 function setCameraTo(view) {
   const car = loadedCars[currentIndex];
-  const pos = car.mesh.position;
-  const bounds = car.mesh.metadata?.bounds;
-
-  if (!bounds) return;
-
+  const bounds = car.mesh.getBoundingInfo().boundingBox;
   const center = bounds.centerWorld;
-  const extents = bounds.extendSizeWorld;
+  const size = bounds.extendSizeWorld;
 
   switch (view) {
     case "left":
-      camera.setPosition(new BABYLON.Vector3(center.x - extents.x * 2, center.y + 1, center.z));
+      camera.setPosition(new BABYLON.Vector3(center.x - size.x * 2.5, center.y + 1, center.z));
       break;
     case "top":
-      camera.setPosition(new BABYLON.Vector3(center.x, center.y + extents.y * 3, center.z));
+      camera.setPosition(new BABYLON.Vector3(center.x, center.y + size.y * 3.5, center.z));
       break;
     case "inside":
       camera.setPosition(new BABYLON.Vector3(center.x, center.y + 1.2, center.z));
@@ -122,10 +107,5 @@ function setCameraTo(view) {
   camera.setTarget(center);
 }
 
-engine.runRenderLoop(() => {
-  scene.render();
-});
-
-window.addEventListener("resize", () => {
-  engine.resize();
-});
+engine.runRenderLoop(() => scene.render());
+window.addEventListener("resize", () => engine.resize());
