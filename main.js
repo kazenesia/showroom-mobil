@@ -1,7 +1,7 @@
 // main.js (pastikan seluruh isi berada dalam format module)
-import * as THREE from './three/build/three.module.js';
-import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
+import * as THREE from 'three/build/three.module.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // Script kamu dimulai di bawah ini
 let scene, camera, renderer, currentCarIndex = 0, cars = [];
