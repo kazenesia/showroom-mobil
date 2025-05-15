@@ -1,3 +1,6 @@
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 
 let scene, camera, renderer, currentCarIndex = 0, cars = [];
 let carNameEl = document.getElementById('car-name');
