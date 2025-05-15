@@ -2,34 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>3D Showroom Mobil</title>
+  <title>3D Car Showroom</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
-  <script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-  <canvas id="renderCanvas"></canvas>
-
-  <!-- Carousel -->
-  <div id="carousel">
-    <button onclick="prevSlide()">❮</button>
-    <div id="car-name">Memuat...</div>
-    <button onclick="nextSlide()">❯</button>
-    <button onclick="selectCar()">Pilih Mobil Ini</button>
+  <div id="overlay">
+    <div id="car-name">Car Name</div>
+    <div id="specs" class="hidden"></div>
+    <button id="prev-btn">←</button>
+    <button id="next-btn">→</button>
+    <button id="detail-btn">View Details</button>
+    <button id="back-btn" class="hidden">← Back</button>
   </div>
-
-  <!-- Detail Panel -->
-  <div id="car-details" style="display: none;">
-    <h2 id="car-title"></h2>
-    <p id="car-specs"></p>
-    <div id="camera-controls">
-      <button onclick="setCameraTo('left')">Samping</button>
-      <button onclick="setCameraTo('top')">Atas</button>
-      <button onclick="setCameraTo('inside')">Dalam</button>
-    </div>
-    <button onclick="exitDetailMode()">Kembali ke Carousel</button>
-  </div>
-
-  <script src="scripts/main.js"></script>
+  <canvas id="three-canvas"></canvas>
+  <script src="main.js"></script>
 </body>
 </html>
