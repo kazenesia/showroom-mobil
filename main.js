@@ -36,11 +36,11 @@ function init() {
 function loadCars() {
   const loader = new GLTFLoader();
   const carPaths = [
-    'assets/models/car1/model.gltf',
-    'assets/models/car2/model.gltf',
-    'assets/models/car3/model.gltf',
-    'assets/models/car4/model.gltf',
-    'assets/models/car5/model.gltf'
+    'assets/car1/car1.gltf',
+    'assets/car2/car2.gltf',
+    'assets/car3/car3.gltf',
+    'assets/car4/car4.gltf',
+    'assets/car5/car5.gltf'
   ];
 
   carPaths.forEach((path, index) => {
