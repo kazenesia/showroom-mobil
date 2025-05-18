@@ -2597,52 +2597,52 @@
   ],
   "images": [
     {
-      "uri": "textures/phong1_baseColor.png"
+      "uri": "assets/car5/textures/phong1_baseColor.png"
     },
     {
-      "uri": "textures/phong1_transmission.png"
+      "uri": "assets/car5/textures/phong1_transmission.png"
     },
     {
-      "uri": "textures/car_Genty_AkyloneDefault1_baseColor.png"
+      "uri": "assets/car5/textures/car_Genty_AkyloneDefault1_baseColor.png"
     },
     {
-      "uri": "textures/car_Genty_AkyloneDefault1_metallicRoughness.png"
+      "uri": "assets/car5/textures/car_Genty_AkyloneDefault1_metallicRoughness.png"
     },
     {
-      "uri": "textures/emis_emissive.png"
+      "uri": "assets/car5/textures/emis_emissive.png"
     },
     {
-      "uri": "textures/under_baseColor.png"
+      "uri": "assets/car5/textures/under_baseColor.png"
     },
     {
-      "uri": "textures/under_metallicRoughness.png"
+      "uri": "assets/car5/textures/under_metallicRoughness.png"
     },
     {
-      "uri": "textures/under_normal.png"
+      "uri": "assets/car5/textures/under_normal.png"
     },
     {
-      "uri": "textures/phong8_baseColor.png"
+      "uri": "assets/car5/textures/phong8_baseColor.png"
     },
     {
-      "uri": "textures/phong8_metallicRoughness.png"
+      "uri": "assets/car5/textures/phong8_metallicRoughness.png"
     },
     {
-      "uri": "textures/plate_metallicRoughness.png"
+      "uri": "assets/car5/textures/plate_metallicRoughness.png"
     },
     {
-      "uri": "textures/tire_baseColor.png"
+      "uri": "assets/car5/textures/tire_baseColor.png"
     },
     {
-      "uri": "textures/tire_metallicRoughness.png"
+      "uri": "assets/car5/textures/tire_metallicRoughness.png"
     },
     {
-      "uri": "textures/tire_normal.png"
+      "uri": "assets/car5/textures/tire_normal.png"
     },
     {
-      "uri": "textures/carbon_baseColor.png"
+      "uri": "assets/car5/textures/carbon_baseColor.png"
     },
     {
-      "uri": "textures/carbon_normal.png"
+      "uri": "assets/car5/textures/carbon_normal.png"
     }
   ],
   "materials": [
