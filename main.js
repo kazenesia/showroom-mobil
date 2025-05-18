@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
 let scene, camera, renderer, controls, currentCarIndex = 0, cars = [];
 const carNameEl = document.getElementById('car-name');
 
