@@ -17,8 +17,8 @@
   <canvas id="three-canvas"></canvas>
   <script type="module">
     import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js';
-    import OrbitControls from 'https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js';
-    import GLTFLoader from 'https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three/examples/jsm/loaders/GLTFLoader.js';
     
     let scene, camera, renderer, controls, currentCarIndex = 0, cars = [];
     const carNameEl = document.getElementById('car-name');
