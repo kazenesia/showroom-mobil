@@ -1,6 +1,6 @@
-import * as THREE from '/showroom-mobil/three/build/three.module.js';
-import { OrbitControls } from '/showroom-mobil/three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from '/showroom-mobil/three/examples/jsm/loaders/GLTFLoader.js'
+import * as THREE from './modules/three.module.js';
+import { OrbitControls } from './modules/OrbitControls.js';
+import { GLTFLoader } from './modules/GLTFLoader.js'
 
 let scene, camera, renderer, controls, currentCarIndex = 0, cars = [];
 const carNameEl = document.getElementById('car-name');
