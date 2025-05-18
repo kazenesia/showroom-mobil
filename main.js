@@ -1,10 +1,7 @@
-// main.js (pastikan seluruh isi berada dalam format module)
-import * as THREE from 'https://unpkg.com/three@0.126.1/three/build/three.module.js';
-import { GLTFLoader } from 'https://unpkg.com/three@0.126.1/three/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.126.1/three/examples/jsm/controls/OrbitControls.js';
+let scene, camera, renderer, controls;
+let currentCarIndex = 0;
+const cars = [];
 
-// Script kamu dimulai di bawah ini
-let scene, camera, renderer, currentCarIndex = 0, cars = [];
 const carNameEl = document.getElementById('car-name');
 const specsEl = document.getElementById('specs');
 const detailBtn = document.getElementById('detail-btn');
@@ -12,9 +9,11 @@ const backBtn = document.getElementById('back-btn');
 
 init();
 loadCars();
+animate();
 
 function init() {
   scene = new THREE.Scene();
+
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(0, 1.5, 4);
 
@@ -23,18 +22,32 @@ function init() {
     antialias: true
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
 
-  const light = new THREE.AmbientLight(0xffffff, 1);
-  scene.add(light);
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  scene.add(ambientLight);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  // Controls
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
 
-  animate();
+  // Debug helper
+  const axesHelper = new THREE.AxesHelper(2);
+  scene.add(axesHelper);
+
+  // Responsive
+  window.addEventListener('resize', onWindowResize, false);
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function loadCars() {
-  const loader = new GLTFLoader();
+  const loader = new THREE.GLTFLoader();
   const carPaths = [
     'assets/car1/car1.gltf',
     'assets/car2/car2.gltf',
@@ -44,22 +57,41 @@ function loadCars() {
   ];
 
   carPaths.forEach((path, index) => {
-    loader.load(path, gltf => {
-      cars[index] = gltf.scene;
-      if (index === 0) {
-        scene.add(cars[0]);
-        carNameEl.textContent = "Car 1";
+    loader.load(
+      path,
+      gltf => {
+        const car = gltf.scene;
+
+        // Posisi, skala, dan rotasi default
+        car.position.set(0, 0, 0);
+        car.scale.set(1.5, 1.5, 1.5);
+        car.rotation.y = Math.PI / 4; // menyerong
+
+        cars[index] = car;
+
+        if (index === 0) {
+          scene.add(car);
+          carNameEl.textContent = "Car 1";
+        }
+
+        console.log(`Model ${index + 1} loaded`, car);
+      },
+      undefined,
+      error => {
+        console.error(`Gagal memuat model ${index + 1} dari ${path}`, error);
       }
-    });
+    );
   });
 }
 
 function showCar(index) {
-  scene.clear();
-  scene.add(new THREE.AmbientLight(0xffffff, 1));
-  if (cars[index]) {
-    scene.add(cars[index]);
-    carNameEl.textContent = "Car " + (index + 1);
+  // Hapus semua mobil dari scene
+  cars.forEach(car => scene.remove(car));
+
+  const car = cars[index];
+  if (car) {
+    scene.add(car);
+    carNameEl.textContent = `Car ${index + 1}`;
   }
 }
 
@@ -84,10 +116,11 @@ backBtn.onclick = () => {
   specsEl.classList.add('hidden');
   detailBtn.classList.remove('hidden');
   backBtn.classList.add('hidden');
-  carNameEl.textContent = "Car " + (currentCarIndex + 1);
+  carNameEl.textContent = `Car ${currentCarIndex + 1}`;
 };
 
 function animate() {
   requestAnimationFrame(animate);
+  controls.update();
   renderer.render(scene, camera);
 }
