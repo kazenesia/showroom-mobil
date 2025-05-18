@@ -2202,37 +2202,37 @@
   ],
   "images": [
     {
-      "uri": "textures/carbon_baseColor.png"
+      "uri": "assets/car2/textures/carbon_baseColor.png"
     },
     {
-      "uri": "textures/carbon_metallicRoughness.png"
+      "uri": "assets/car2/textures/carbon_metallicRoughness.png"
     },
     {
-      "uri": "textures/carbon_normal.png"
+      "uri": "assets/car2/textures/carbon_normal.png"
     },
     {
-      "uri": "textures/Material_baseColor.png"
+      "uri": "assets/car2/textures/Material_baseColor.png"
     },
     {
-      "uri": "textures/Material_metallicRoughness.png"
+      "uri": "assets/car2/textures/Material_metallicRoughness.png"
     },
     {
-      "uri": "textures/under_baseColor.png"
+      "uri": "assets/car2/textures/under_baseColor.png"
     },
     {
-      "uri": "textures/glows_baseColor.png"
+      "uri": "assets/car2/textures/glows_baseColor.png"
     },
     {
-      "uri": "textures/int1_baseColor.png"
+      "uri": "assets/car2/textures/int1_baseColor.png"
     },
     {
-      "uri": "textures/plate_baseColor.png"
+      "uri": "assets/car2/textures/plate_baseColor.png"
     },
     {
-      "uri": "textures/material_8_metallicRoughness.png"
+      "uri": "assets/car2/textures/material_8_metallicRoughness.png"
     },
     {
-      "uri": "textures/tire_baseColor.png"
+      "uri": "assets/car2/textures/tire_baseColor.png"
     }
   ],
   "materials": [
